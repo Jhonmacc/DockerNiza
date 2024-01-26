@@ -8,8 +8,24 @@ services:
       dockerfile: ./docker/Dockerfile
       args:
         PHP_VERSION: '8.2.4-fpm-bullseye'
-    # volumes:
-    #   - ./app:/var/www/app
+    volumes:
+        - ./app/golevel:/var/www/app/golevel
     ports:
       - "80:80" #http
       - "443:443" #https
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password
+      - MYSQL_DATABASE=app
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+volumes:
+  mariadb_data:
